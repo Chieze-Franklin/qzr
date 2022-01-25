@@ -15,6 +15,15 @@ mongoose
 
         app.use(routes);
 
+        app.use((err, req, res, next) => {
+            res.status(500).json({
+                error: {
+                    message: err.message,
+                    stack: err.stack.split("\n").map(s => s.trim()),
+                }
+            })
+        });
+
 		app.listen(process.env.PORT, () => {
 			console.log("Server has started!")
 		})
