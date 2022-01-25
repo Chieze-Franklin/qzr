@@ -30,6 +30,7 @@ Run `npm test`
 - To get your own quizzes, [GET: /q?mine=true](#get-q)
 - To update a quiz (for instance, to make it published), [PATCH: /q/:id](#patch-qid)
 - To attempt a quiz, [POST: /a/:id](#post-aid)
+- To get basic stats for all attempts (or for attempts on a particular quiz), [GET: /stats/:id?](#get-statsid)
 
 ### POST: /signup
 
@@ -368,3 +369,46 @@ Example:
 
 **NOTE:** Modifying a question in a quiz does not affect past attempts on the question; those attempts will continue to capture the state of that question at the time the attempts were made.
 
+### GET: /stats/:id?
+
+This endpoint gets basic stats partaining to attempted quizzes for the currently signed-in user. You can get all stats for the current user by navigating to `GET: /stats`. You can also get all stats for a particular quiz by appending the quiz ID to the request URL `GET: /stats/61ef542bdfb8b1a566b2b5ce`.
+
+#### Request Header
+
+- `authorization`: The authorization header containing the Bearer token representing the currently signed-in user.
+
+Example:
+
+```json
+{
+    "authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.NjFlZjM2ZGU3OGJlYWIwYTU3NmM2OTY5.3kR3x8zxEqBjFm_LYMHVN7rGL0bF3FT4ERw4ZUh9_EA"
+}
+```
+
+#### Response Body
+
+- `stats`: The stats object. This object contains:
+    - `attemptsCount`: The number of attempts.
+    - `questionsCount`: The total number of questions in all those attempts.
+    - `correctQuestionsCount`: The total number of correct questions in all those attempts.
+    - `attemptedQuestionsCount`: The total number of attempted questions in all those attempts.
+    - `score`: The average score of all those attempts.
+    - `scores`: An array of scores from all those attempts.
+
+Example:
+
+```json
+{
+    "stats": {
+        "attemptsCount": 2,
+        "questionsCount": 4,
+        "correctQuestionsCount": 3,
+        "attemptedQuestionsCount": 4,
+        "score": 75,
+        "scores": [
+            50,
+            100
+        ]
+    }
+}
+```
