@@ -31,6 +31,7 @@ Run `npm test`
 - To update a quiz (for instance, to make it published), [PATCH: /q/:id](#patch-qid)
 - To attempt a quiz, [POST: /a/:id](#post-aid)
 - To get basic stats for all attempts (or for attempts on a particular quiz), [GET: /stats/:id?](#get-statsid)
+- [Other Endpoints](#other-endpoints)
 
 ### POST: /signup
 
@@ -412,3 +413,7 @@ Example:
     }
 }
 ```
+
+### Other Endpoints
+
+- `GET: /a/:id?`: Get all attempts made by the current user. You can get all attempts on a quiz by supplying the quiz ID `GET: /a/61ef542bdfb8b1a566b2b5ce`.

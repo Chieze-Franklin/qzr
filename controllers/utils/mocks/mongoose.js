@@ -1,4 +1,5 @@
 const AttemptModel = require("../../../models/Attempt");
+const QuizModel = require("../../../models/Quiz");
 
 const attempts = [{
     user_id: "61ef362757482f142fb3825b",
@@ -52,8 +53,28 @@ const attempts = [{
     date: "2022-01-26T12:14:40.784Z"
 }];
 
+const quiz = {
+    _id: "61ef542bdfb8b1a566b2b5ce",
+    title: "Quiz on Alphabets",
+    published: true,
+    user_id: "61ef36de78beab0a576c6969",
+    questions: [{
+        _id: "61ef542bdfb8b1a566b2b5cf",
+        question: "What is the first letter in the English alphabet?",
+        answer: "A"
+    }, {
+        _id: "61ef542bdfb8b1a566b2b5d0",
+        question: "What is the second letter in the English alphabet?",
+        answer: "B",
+        options: ["A", "B", "C"]
+    }],
+};
+
 AttemptModel.find = jest.fn().mockResolvedValue(attempts);
+
+QuizModel.findById = jest.fn().mockResolvedValue(quiz);
 
 module.exports = {
     AttemptModel,
+    QuizModel,
 };

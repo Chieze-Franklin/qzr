@@ -45,21 +45,21 @@ const create = async (req, res, next) => {
 
 const find = async (req, res, next) => {
     try {
-        // TODO: validate req.query
+        let attempts = [];
 
-        let quizzes = [];
-
-        if (req.query.mine) {
-            quizzes = await AttemptModel.find({ user_id: req.user._id }).select("-questions");
+        if (req.params.id) {
+            attempts = await AttemptModel.find({ user_id: req.user._id, quiz_id: req.params.id }, { questions: 0 }); // .select("-questions");
         } else {
-            quizzes = await AttemptModel.find({ user_id: { $ne: req.user._id }, published: true }).select("-questions");
+            attempts = await AttemptModel.find({ user_id: req.user._id }, { questions: 0 }); // .select("-questions");
         }
 
-        res.json(quizzes);
+        res.json({ attempts });
     } catch(err) {
         next(err);
     }
 };
+
+// TODO: delete attempts
 
 module.exports = {
     create,
