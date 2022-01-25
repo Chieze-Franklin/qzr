@@ -2,8 +2,6 @@ const AttemptModel = require("../models/Attempt");
 
 const find = async (req, res, next) => {
     try {
-        // TODO: validate req.params
-
         let attempts = [];
 
         if (req.params.id) {
@@ -13,7 +11,6 @@ const find = async (req, res, next) => {
         }
 
         // TODO: replace these with an aggregate query
-
         const allQuestions = attempts.flatMap(a => a.questions);
         const correctQuestions = allQuestions.filter(q => q.correct);
         const attemptedQuestions = allQuestions.filter(q => q.attempted);
