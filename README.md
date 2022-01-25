@@ -23,6 +23,14 @@ Run `npm test`
 
 ## API
 
+- To sign up, [POST: /signup](#post-signup)
+- To sign in, [POST: /signin](#post-signin)
+- To create a quiz, [POST: /q](#post-q)
+- To get other users' published quizzes, [GET: /q](#get-q)
+- To get your own quizzes, [GET: /q?mine=true](#get-q)
+- To update a quiz (for instance, to make it published), [PATCH: /q/:id](#patch-qid)
+- To attempt a quiz, [POST: /a/:id](#post-aid)
+
 ### POST: /signup
 
 This endpoint creates a new user in the database and returns an authentication token that represents the user. The returned token should be included in the header of requests to help authenticate the requests.
@@ -239,6 +247,7 @@ Example:
 {
 	"published": true
 }
+```
 
 #### Response Body
 
@@ -271,4 +280,91 @@ If a user tries to update another their own quiz:
     }
 }
 ```
+
+### POST: /a/:id
+
+This endpoint creates an attempt on a published quiz belonging to another user.
+
+### Request Params
+
+- `id`: The id of the quiz being attempted. The quiz must be published and must **not** belong to the currently signed-in user.
+
+#### Request Header
+
+- `authorization`: The authorization header containing the Bearer token representing the currently signed-in user.
+
+Example:
+
+```json
+{
+    "authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.NjFlZjM2Mjc1NzQ4MmYxNDJmYjM4MjVi.AwLLXaf-0KC2lqt_WYi6UMedM4PNi9zvmQ18e4ibnis"
+}
+```
+
+#### Request Body
+
+- `questions`: The array of questions being attempted. Each question object should have:
+    - `id`: The ID of the question being attempted.
+    - `answer`: The attempted answer. This will be compared to the actual answer to determine if this attempt is correct.
+
+Example:
+
+```json
+{
+	"questions": [{
+		"id": "61ef542bdfb8b1a566b2b5cf",
+		"answer": "A"
+	}, {
+		"id": "61ef542bdfb8b1a566b2b5d0",
+		"answer": "A"
+	}]
+}
+```
+
+#### Response Body
+
+- `attempt`: The newly-created attempt object. This object contains:
+    - `user_id`: The ID of the user that had this attempt.
+    - `quiz_id`: The ID of the quiz that was attempted.
+    - `title`: The title of the attempted quiz at the time it was attempted.
+    - `score`: The score of this attempt, in percentage (max of 100%).
+    - `questions`: The questions of the attempted quiz at the time it was attempted. Each question object has:
+        - `question`: The question that was attempted.
+        - `answer`: The expected answer to the question.
+        - `attemptedAnswer`: The answer specified by the user that had this attempt.
+        - `attempted`: A boolean value to help tell if this question was attempted or skipped.
+        - `correct`: A boolean value to help tell if the `attemptedAnswer` matches the expected `answer`.
+
+```json
+{
+    "attempt": {
+        "user_id": "61ef362757482f142fb3825b",
+        "quiz_id": "61ef542bdfb8b1a566b2b5ce",
+        "title": "Quiz on Alphabets",
+        "score": 50,
+        "questions": [
+            {
+                "question": "What is the first letter in the English alphabet?",
+                "answer": "A",
+                "attemptedAnswer": "A",
+                "attempted": true,
+                "correct": true,
+                "_id": "61efe9b0afbf8eb52ee0341f"
+            },
+            {
+                "question": "What is the second letter in the English alphabet?",
+                "answer": "B",
+                "attemptedAnswer": "A",
+                "attempted": true,
+                "correct": false,
+                "_id": "61efe9b0afbf8eb52ee03420"
+            }
+        ],
+        "_id": "61efe9b0afbf8eb52ee0341e",
+        "date": "2022-01-25T12:14:40.784Z"
+    }
+}
+```
+
+**NOTE:** Modifying a question in a quiz does not affect past attempts on the question; those attempts will continue to capture the state of that question at the time the attempts were made.
 
