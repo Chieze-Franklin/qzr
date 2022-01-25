@@ -24,7 +24,12 @@ Run `npm test`
 ## API
 
 - To sign up, [POST: /signup](#post-signup)
-- To sign up, [POST: /signin](#post-signin)
+- To sign in, [POST: /signin](#post-signin)
+- To create a quiz, [POST: /q](#post-q)
+- To get other users' published quizzes, [GET: /q](#get-q)
+- To get your own quizzes, [GET: /q?mine=true](#get-q)
+- To update a quiz (for instance, to make it published), [PATCH: /q/:id](#patch-qid)
+- To attempt a quiz, [POST: /a/:id](#post-aid)
 
 ### POST: /signup
 
