@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const schema = mongoose.Schema({
     user_id: mongoose.Schema.ObjectId,
 	title: String,
+    published: { type: Boolean, default: false },
     questions: [{
         question: String,
         answer: String,
