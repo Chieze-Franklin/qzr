@@ -8,6 +8,12 @@ const schema = mongoose.Schema({
         answer: String,
         options: [String],
     }],
-})
+});
+
+schema.methods.toJSON = function() {
+    var obj = this.toObject();
+    delete obj.__v;
+    return obj;
+}
 
 module.exports = mongoose.model("Quiz", schema);

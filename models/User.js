@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const schema = mongoose.Schema({
 	username: String,
     passwordHash: String,
-})
+});
 
 schema.methods.toJSON = function() {
     var obj = this.toObject();
