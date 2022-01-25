@@ -33,6 +33,8 @@ const find = async (req, res, next) => {
     }
 };
 
+// TODO: findOne
+
 const update = async (req, res, next) => {
     try {
         // TODO: validate req.params and req.body

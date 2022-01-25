@@ -1,8 +1,8 @@
 const { AttemptModel } = require("./utils/mocks/mongoose");
 const { mockRequest, mockResponse, mockNext } = require("./utils/mocks/express");
-const statsController = require("./Stats");
+const attemptController = require("./Attempt");
 
-describe("Stats Controller", () => {
+describe("Attempt Controller", () => {
     describe("find", () => {
         it('expects AttemptModel.find to be called with 1 filter if there is no req.params.id', async () => {
             const req = mockRequest();
@@ -10,9 +10,9 @@ describe("Stats Controller", () => {
             const res = mockResponse();
             const next = mockNext();
     
-            await statsController.find(req, res, next);
+            await attemptController.find(req, res, next);
         
-            expect(AttemptModel.find).toHaveBeenCalledWith({ user_id: req.user._id }); // (expect.anything());
+            expect(AttemptModel.find).toHaveBeenCalledWith({ user_id: req.user._id }, { questions: 0 });
             expect(res.json).toHaveBeenCalled();
         });
     
@@ -22,9 +22,9 @@ describe("Stats Controller", () => {
             const res = mockResponse();
             const next = mockNext();
     
-            await statsController.find(req, res, next);
+            await attemptController.find(req, res, next);
         
-            expect(AttemptModel.find).toHaveBeenCalledWith({ user_id: req.user._id, quiz_id: req.params.id });
+            expect(AttemptModel.find).toHaveBeenCalledWith({ user_id: req.user._id, quiz_id: req.params.id }, { questions: 0 });
             expect(res.json).toHaveBeenCalled();
         });
     });
