@@ -14,6 +14,7 @@ The root domain for this API is located at [https://qzrapi.herokuapp.com/](https
 - Create a `.env` file in the root directory containing values for
     - `DB_URL`: The MongoDB connection URL
     - `PORT`: The port for the API server
+    - `JWT_SECRET`: The jsonwebtoken secret
 - Run `npm start`
 - You can now test the API using a tool like [PostMan](https://www.postman.com/downloads/)
 
